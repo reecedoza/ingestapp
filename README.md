@@ -2,11 +2,11 @@
 Ingest application takes CSV files and creates a SQLite database table record of that CSV file.
 
 ## Usage
-Clone repository
-Import dependencies (JDBC)(Maven)
-Build project
-Place ms3Interview.csv file in the project root dir
-Run application
+1. Clone repository
+2. Import dependencies (JDBC)(Maven)
+3. Build project
+4. Place ms3Interview.csv file in the project root dir
+5. Run application
 
 ## Approach
 For this application I knew that the longest part would be either the parsing or the insertions to the database so that is what I mainly focused on. I used a prepared statement, as my inital attempt with regular statements was slow and prone to errors (as well as sql injections), that way I was able to create batches of insertion queries without having to execute them immediately. Also using prepared statements allowed me to directly insert the data as I was parsing through it.
