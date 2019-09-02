@@ -42,6 +42,9 @@ public class App
 
             sc.nextLine(); // to ignore first row which holds column names
 
+            final int batchSize = 1000;
+            int count = 0;
+
             while(sc.hasNextLine()){
                 String currentLine = sc.nextLine();
                 String[] values = currentLine.replace("'", "''").split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
@@ -61,10 +64,15 @@ public class App
                     ps.addBatch();
 
                     rsuccessful++;
+
+                    // execute batch after 1000 iterations
+                    if(++count % batchSize == 0){
+                        ps.executeBatch();
+                    }
                 } else {
                     // add bad entries to csv
                     badRecordsString.append(currentLine);
-                    badRecordsString.append("\\n");
+                    badRecordsString.append("\n");
 
                     rfailed++;
                 }
