@@ -1,9 +1,13 @@
 package com.interview.app;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
 import java.util.Scanner;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 /**
  * Hello world!
@@ -13,11 +17,11 @@ public class App
 {
     public static void main( String[] args ) throws Exception
     {
-        File file = new File("D:\\Programming Projects\\Github Projects\\injestapp\\ms3Interview.csv");
+        File file = new File("ms3Interview.csv");
         String ingestFileName = file.getName().replaceFirst("[.][^.]+$", "");
         Scanner sc = new Scanner(file);
 
-        int rrecieved = 0;
+        int rreceived = 0;
         int rsuccessful = 0;
         int rfailed = 0;
 
@@ -64,7 +68,7 @@ public class App
 
                     rfailed++;
                 }
-                rrecieved++;
+                rreceived++;
             }
 
             writer.write(badRecordsString.toString());
@@ -83,5 +87,29 @@ public class App
                 System.err.println(e.getMessage());
             }
         }
+
+        logging(rreceived, rsuccessful, rfailed);
+    }
+
+    private static void logging(int received, int successful, int failed) {
+        Logger logger = Logger.getLogger(App.class.getName());
+        FileHandler fh = null;
+
+        try{
+            fh = new FileHandler("injestlog.log", true);
+
+            SimpleFormatter formatter = new SimpleFormatter();
+            fh.setFormatter(formatter);
+
+            logger.addHandler(fh);
+        } catch (SecurityException | IOException e) {
+            e.printStackTrace();
+        }
+
+        logger.info(received + " of records received");
+        logger.info(successful + " of records successful");
+        logger.info(failed + " of records failed");
+
+        if(fh != null) fh.close();
     }
 }
