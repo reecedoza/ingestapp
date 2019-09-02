@@ -1,4 +1,4 @@
-# ingestapp
+# Ingest App
 Ingest application takes CSV files and creates a SQLite database table record of that CSV file.
 
 ## Usage
